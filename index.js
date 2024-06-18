@@ -1,5 +1,6 @@
 //Linked Packages for this project
 var inquirer = require('inquirer');
+var generateMarkdown = require('./utils/generateMarkdown');
 
 // TODO: Create an array of questions for user input
 const questions = [
@@ -108,7 +109,12 @@ function writeToFile(fileName, data) {}
 
 // TODO: Create a function to initialize app
 function init() {
-    
+    inquirer.prompt(questions)
+    .then(function(answers){
+        var markdown = generateMarkdown(answers);
+        console.log(answers)
+        console.log(markdown)
+    })
 }
 
 // Function call to initialize app
