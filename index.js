@@ -1,5 +1,6 @@
 //Linked Packages for this project
 var inquirer = require('inquirer');
+const fs = require('fs');
 var generateMarkdown = require('./utils/generateMarkdown');
 
 // TODO: Create an array of questions for user input
@@ -55,7 +56,7 @@ const questions = [
     {
         type: 'input',
         message: "How do I install this?",
-        name: 'instillationInstruction',
+        name: 'instillation',
         validate: function(answer) {
             if (answer.length < 1) {
                 return console.log("Please provide instillation instructions.")
@@ -86,6 +87,12 @@ const questions = [
         }
     },
     {
+        type: "list",
+        name: "License",
+        message: "Please choose a license.",
+        choices: ["GNU GPLv3", "Apache License 2.0", "MIT License", "Boost Software License 1.0", "None"],
+      },
+    {
         type:'input',
         message: 'How would you test this application?', 
         name: 'testing',
@@ -107,20 +114,23 @@ const questions = [
 // TODO: Create a function to write README file
 function writeToFile(fileName, data) {
     const filePath = `${fileName}`;
-    if (err) {
+    fs.writeFile(filePath, data, (err) => {
+      if (err) {
         throw err;
-    }
-}
+      }
+      console.log(`The ${fileName} file has been created!`);
+    });
+  }
+
 
 // TODO: Create a function to initialize app
 function init() {
-    inquirer.prompt(questions)
-    .then(function(answers){
-        var markdown = generateMarkdown(answers);
-        console.log(answers)
-        console.log(markdown)
-    })
-}
-
-// Function call to initialize app
-init();
+    inquirer.prompt(questions).then((answers) => {
+      console.log(answers);
+      const githubLink = `https://github.com/${answers.GithubUsername}`;
+      const data = generateMarkdown(answers, githubLink);
+      writeToFile("README.md", data);
+    });
+  }
+  
+  init();

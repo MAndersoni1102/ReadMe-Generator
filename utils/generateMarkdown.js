@@ -1,6 +1,7 @@
 // TODO: Create a function that returns a license badge based on which license is passed in
 // If there is no license, return an empty string
-function renderLicenseBadge(license) {
+function renderLicenseBadge(License) {
+  // If statement that passes in the License and returns the appropriate badge else returns an empty string
   if (License === "GNU GPLv3") {
     return `![Static Badge](https://img.shields.io/badge/GNU_GPLv3-License-red)`;
   } else if (License === "Apache License 2.0") {
@@ -16,19 +17,8 @@ function renderLicenseBadge(license) {
 
 // TODO: Create a function that returns the license link
 // If there is no license, return an empty string
-function renderLicenseLink(license) {
-  if (License === "None") {
-    return "N/A";
-  } else {
-    return `This project is licensed under the ${renderLicenseLink(
-      License
-    )} license.`;
-  }
-}
-
-// TODO: Create a function that returns the license section of README
-// If there is no license, return an empty string
-function renderLicenseSection(license) {
+function renderLicenseLink(License) {
+  // If statement that passes in the License and returns the appropriate link else returns an empty string
   if (License === "GNU GPLv3") {
     return `[GNU GPLv3](https://choosealicense.com/licenses/gpl-3.0/)`;
   } else if (License === "Apache License 2.0") {
@@ -42,23 +32,57 @@ function renderLicenseSection(license) {
   }
 }
 
+// TODO: Create a function that returns the license section of README
+// If there is no license, return an empty string
+// If there is no license, return an N/A else return the license
+function renderLicenseSection(License) {
+  if (License === "None") {
+    return "N/A";
+  } else {
+    return `This project is licensed under the ${renderLicenseLink(
+      License
+    )} license.`;
+  }
+}
+
 // TODO: Create a function to generate markdown for README
 function generateMarkdown(data) {
-  return `# ${data.projectName}
+  // This is a const variable for the github link that sets the variable to a template string which includes the github username from the data object
+  const githubLink = `https://github.com/${data.username}`;
+  // This is a return statement that returns a template string with the data object passed in.
+  // The template string includes the title, license badge, description, table of contents, installation, usage, license badge, license section, contributing, tests, github link, email, and questions.
+  return `
+  # ${data.projectName}
 
-## Description
-${data.projectDescription}
+  ${renderLicenseBadge(data.License)}
 
-## Instillation
-${data.instillationInstruction}
+  ## Description
 
-## Usage
-${data.usage}
+  ${data.projectDescription}
 
-## Contributions
-${data.contributions}
+  ## Installation
 
-`;
-}
+  ${data.instillation}
+
+  ## Usage
+
+  ${data.usage}
+
+  ## License
+
+  ${renderLicenseBadge(data.License)}
+
+  ${renderLicenseSection(data.License)}
+
+  ## Contributing
+
+  ${data.contributions}
+
+  ## Tests
+
+  ${data.testing}
+  
+
+` }
 
 module.exports = generateMarkdown;
